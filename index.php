@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Desafio PHP</title>
+</head>
+
+<body>
+    <?php
+    $preco = $_POST['price'] ?? '0';
+    $reaj = $_POST['reaj'] ?? '0';
+    ?>
+    <main>
+
+        <h1>Reajustador de Preços</h1>
+        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+            <label for="price">Preço do Produto (R$)</label>
+            <input type="number" name="price" id="price" min="0.10" step="0.01" value="<?= $preco ?>">
+            <label for="reaj">Qual será o percentual de reajuste? (<strong><span id="p">?</span>%</strong>)</label>
+            <input type="range" name="reaj" id="reaj" min="0" max="100" step="1" oninput="mudaValor()"
+                value="<?= $reaj ?>">
+            <input type="submit" value="Reajustar">
+        </form>
+
+    </main>
+    <?php
+    $aumento = ($preco * $reaj) / 100;
+    $novo = $preco + $aumento;
+    $dif = $novo - $preco;
+    ?>
+    <section>
+        <h2>Resultado do Reajuste</h2>
+        <p>O produto que custava <strong>R$<?= number_format($preco, 2, ",", ".") ?></strong>, com
+            <strong><?= $reaj ?>% de
+                aumento</strong> vai passar a custar
+            <strong>R$<?= number_format($novo, 2, ",", ".") ?></strong> a partir de agora.
+        </p>
+        <p>Houve um aumento de <strong>R$<?=number_format($dif, 2, ",", ".")?></strong></p>
+
+    </section>
+    <script>
+    // Declarações automáticas
+    mudaValor()
+
+    function mudaValor() {
+        p.innerText = reaj.value;
+    }
+    </script>
+
+</body>
+
+</html>
